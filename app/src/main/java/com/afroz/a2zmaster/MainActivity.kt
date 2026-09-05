@@ -6,11 +6,9 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.Locale
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
@@ -19,15 +17,22 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var btnPlay: Button
     private lateinit var btnStop: Button
     private lateinit var btnLang: Button
-    private lateinit var headerTitle: TextView
 
+    // Only ever touched on the Main thread.
     private var tts: TextToSpeech? = null
-    private var ttsReady = false
-    private var muted = false
-    private var englishVoice = false
-    private var lastSpoken = ""
 
-    private val utteranceId = Random.nextInt(1, Int.MAX_VALUE)
+    // Volatile so the JS-bridge background thread can safely read readiness/mute state.
+    @Volatile
+    private var ttsReady = false
+
+    @Volatile
+    private var muted = false
+
+    @Volatile
+    private var englishVoice = false
+
+    @Volatile
+    private var lastSpoken = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +43,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         btnPlay = findViewById(R.id.btnPlay)
         btnStop = findViewById(R.id.btnStop)
         btnLang = findViewById(R.id.btnLang)
-        headerTitle = findViewById(R.id.headerTitle)
 
         setupWebView()
         setupButtons()
 
+        // TTS is constructed on the Main thread and must always be used from it.
         tts = TextToSpeech(this, this)
     }
 
@@ -59,7 +64,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun setupButtons() {
         btnSpeaker.setOnClickListener {
             muted = !muted
-            if (muted) tts?.stop()
+            if (muted) stopSafe()
             updateSpeakerButton()
             pushStateToJs()
         }
@@ -72,75 +77,119 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             if (muted) {
                 muted = false
                 updateSpeakerButton()
+                pushStateToJs()
             }
-            if (lastSpoken.isNotBlank()) {
-                speak(lastSpoken)
+            val text = lastSpoken
+            if (text.isNotBlank()) {
+                speakSafe(text)
             } else {
                 toast("पहले कोई शब्द चुनें")
             }
         }
 
         btnStop.setOnClickListener {
-            tts?.stop()
+            stopSafe()
         }
 
         btnLang.setOnClickListener {
             englishVoice = !englishVoice
-            applyTtsLanguage()
+            applyTtsLanguageSafe()
             updateLangButton()
             pushStateToJs()
         }
     }
 
-    // ---------- TTS ----------
+    // ---------- TTS init ----------
 
     override fun onInit(status: Int) {
-        if (status == TextToSpeech.SUCCESS) {
-            ttsReady = true
-            applyTtsLanguage()
-            pushStateToJs()
+        ttsReady = status == TextToSpeech.SUCCESS
+        if (ttsReady) {
+            applyTtsLanguageSafe()
         } else {
-            ttsReady = false
             toast(getString(R.string.tts_unavailable))
         }
+        pushStateToJs()
     }
 
-    private fun applyTtsLanguage() {
+    /**
+     * Applies the current voice locale with a safe fallback chain:
+     * Hindi-IN -> English-IN -> English -> system default.
+     */
+    private fun applyTtsLanguageSafe() {
         val t = tts ?: return
-        val res = if (englishVoice) {
-            t.setLanguage(Locale.forLanguageTag("en-IN"))
-        } else {
-            val r = t.setLanguage(Locale.forLanguageTag("hi-IN"))
-            if (r == TextToSpeech.LANG_MISSING_DATA || r == TextToSpeech.LANG_NOT_SUPPORTED) {
-                t.setLanguage(Locale.ENGLISH)
-            } else r
+        try {
+            val wanted = if (englishVoice) Locale.forLanguageTag("en-IN")
+                         else Locale.forLanguageTag("hi-IN")
+            var result = t.setLanguage(wanted)
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                result = t.setLanguage(Locale.ENGLISH)
+            }
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                result = t.setLanguage(Locale.US)
+            }
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                result = t.setLanguage(Locale.getDefault())
+            }
+            t.setSpeechRate(0.85f)
+            t.setPitch(1.0f)
+        } catch (e: Exception) {
+            // Never crash the app because of a TTS voice hitch.
         }
-        t.setSpeechRate(0.85f)
-        t.setPitch(1.0f)
     }
 
-    private fun speak(text: String) {
+    // ---------- Safe speak / stop (Main thread only) ----------
+
+    private fun speakSafe(text: String): Boolean {
         lastSpoken = text
-        val t = tts ?: return
-        if (muted) return
-        markSpeaking(true)
-        val id = "utt_${utteranceId}_${System.currentTimeMillis()}"
-        t.speak(text, TextToSpeech.QUEUE_FLUSH, null, id)
+        val t = tts
+        if (t == null || !ttsReady) return false
+        return try {
+            val id = "utt_${System.currentTimeMillis()}"
+            // QUEUE_FLUSH: a fresh tap instantly replaces whatever is playing.
+            t.speak(text, TextToSpeech.QUEUE_FLUSH, null, id) == TextToSpeech.SUCCESS
+        } catch (e: Exception) {
+            false
+        }
     }
 
-    private fun markSpeaking(speaking: Boolean) {
-        runOnUiThread {
-            pushStateToJs()
+    private fun stopSafe() {
+        try {
+            tts?.stop()
+        } catch (e: Exception) {
+            // TTS stop must never crash the app.
         }
     }
 
     private fun updateSpeakerButton() {
-        btnSpeaker.text = if (muted) "🔇  OFF" else "🔊  ON"
+        try {
+            btnSpeaker.text = if (muted) "🔇  OFF" else "🔊  ON"
+        } catch (e: Exception) {
+        }
     }
 
     private fun updateLangButton() {
-        btnLang.text = if (englishVoice) "EN" else "हिं"
+        try {
+            btnLang.text = if (englishVoice) "EN" else "हिं"
+        } catch (e: Exception) {
+        }
     }
+
+    // ---------- Main-thread helper for the JS bridge ----------
+    // The WebView JS bridge runs on a background thread; every call that reaches
+    // the TTS engine must be marshalled back to the Main thread.
+    private fun runOnMain(runnable: () -> Unit) {
+        try {
+            runOnUiThread(runnable)
+        } catch (e: Exception) {
+            // Activity finishing / Looper quitting: swallow, never crash.
+        }
+    }
+
+    private fun speakSafeFromBridge(text: String) {
+        runOnMain { speakSafe(text) }
+    }
+
+    // ---------- Android <-> JS state sync ----------
 
     private fun pushStateToJs() {
         val state = buildString {
@@ -150,32 +199,51 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             append(",\"english\":").append(englishVoice)
             append("}")
         }
-        runOnUiThread {
-            if (::webView.isInitialized) {
-                webView.evaluateJavascript("window.androidUiChange && window.androidUiChange($state)", null)
+        runOnMain {
+            try {
+                if (::webView.isInitialized) {
+                    webView.evaluateJavascript(
+                        "window.androidUiChange && window.androidUiChange($state)", null
+                    )
+                }
+            } catch (e: Exception) {
+                // A dead WebView must not crash the app.
             }
         }
     }
 
     private fun toast(msg: String) {
-        runOnUiThread {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        runOnMain {
+            try {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+            }
         }
     }
 
     // ---------- JS bridge ----------
 
     inner class A2ZBridge {
+        /**
+         * Returns true when the native TTS engine handled the request.
+         * The frontend falls back to the Web Speech API when this returns false.
+         */
         @JavascriptInterface
-        fun speak(text: String?) {
-            if (text.isNullOrBlank()) return
-            runOnUiThread { speak(text) }
+        fun speak(text: String?): Boolean {
+            if (text.isNullOrBlank()) return false
+            // Read-only, safe on the bridge thread.
+            if (!ttsReady || muted) return false
+            speakSafeFromBridge(text)
+            return true
         }
 
         @JavascriptInterface
         fun stop() {
-            tts?.stop()
+            runOnMain { stopSafe() }
         }
+
+        @JavascriptInterface
+        fun isReady(): Boolean = ttsReady && !muted
     }
 
     override fun onResume() {
@@ -184,8 +252,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     override fun onDestroy() {
-        tts?.stop()
-        tts?.shutdown()
+        try {
+            tts?.stop()
+            tts?.shutdown()
+        } catch (e: Exception) {
+            // TTS teardown must never crash.
+        }
+        tts = null
+        ttsReady = false
         super.onDestroy()
     }
 }

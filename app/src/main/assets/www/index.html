@@ -189,15 +189,22 @@ function speak(text) {
   if (!text) return;
   if (text.length > 380) text = text.slice(0, 380);
   if (!speakerOn) return;
+  // Prefer the native Android TTS engine; the bridge returns false when the
+  // engine is not ready/muted, so we transparently fall back to the Web
+  // Speech API (does not spam an exception path or ever crash).
   if (window.AndroidBridge && typeof window.AndroidBridge.speak === "function") {
-    try { window.AndroidBridge.speak(text); return; } catch (e) {}
+    try {
+      if (window.AndroidBridge.speak(text)) return;
+    } catch (e) { /* fall through to Web Speech API */ }
   }
   if ("speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(text);
-    u.lang = "hi-IN";
-    u.rate = 0.85;
-    window.speechSynthesis.speak(u);
+    try {
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = "hi-IN";
+      u.rate = 0.85;
+      window.speechSynthesis.speak(u);
+    } catch (e) { /* never crash */ }
   }
 }
 
@@ -205,7 +212,9 @@ function stopSpeak() {
   if (window.AndroidBridge && typeof window.AndroidBridge.stop === "function") {
     try { window.AndroidBridge.stop(); return; } catch (e) {}
   }
-  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  if ("speechSynthesis" in window) {
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+  }
 }
 
 // ---------- highlight + speak helper ----------
