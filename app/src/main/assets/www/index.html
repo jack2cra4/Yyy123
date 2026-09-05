@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>A2Z Master</title>
+<style>
+  :root {
+    --primary: #1565C0;
+    --primary-dark: #0D47A1;
+    --gold: #FFD54F;
+    --ink: #1c2430;
+    --muted: #5f6b7a;
+    --bg: #f2f5f9;
+    --card: #ffffff;
+    --line: #e3e8ef;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Noto Sans Devanagari", "Roboto", "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  #app { max-width: 720px; margin: 0 auto; padding-bottom: 96px; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    padding: 22px 18px 18px;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 4px 14px rgba(13,71,161,.25);
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 24px; letter-spacing: .5px; }
+  .hero p { font-size: 14px; opacity: .9; margin-top: 6px; }
+  .hero .hint {
+    margin-top: 12px; font-size: 12.5px; background: rgba(255,255,255,.14);
+    border-radius: 10px; padding: 8px 10px; display: inline-block;
+  }
+
+  .section-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 16px; font-weight: 700; margin: 4px 16px 10px;
+    color: var(--primary-dark);
+  }
+  .section-title .count {
+    font-size: 12px; color: var(--muted); font-weight: 500;
+  }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 12px 12px; }
+  @media (min-width: 560px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .book-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 16px 14px; cursor: pointer; transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .book-card:active { transform: scale(.97); }
+  .book-card .emoji { font-size: 30px; }
+  .book-card .t { font-weight: 700; font-size: 15px; margin-top: 8px; line-height: 1.3; }
+  .book-card .s { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.35; }
+
+  /* Book view */
+  .topbar {
+    display: flex; align-items: center; gap: 10px; margin: 6px 4px 4px;
+  }
+  .back-btn {
+    background: var(--primary); color: #fff; border: none; border-radius: 12px;
+    padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer;
+  }
+  .book-head {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff; border-radius: 18px; padding: 18px 16px; margin: 0 12px 14px;
+    box-shadow: 0 4px 12px rgba(13,71,161,.22);
+  }
+  .book-head h2 { font-size: 20px; }
+  .book-head p { font-size: 13px; opacity: .92; margin-top: 4px; }
+
+  .chapter {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    margin: 0 12px 14px; overflow: hidden;
+  }
+  .chapter .ch-head {
+    padding: 14px 16px; border-bottom: 1px solid var(--line);
+    background: #fbfcfe;
+  }
+  .chapter .ch-head .n { font-weight: 700; font-size: 15.5px; color: var(--primary-dark); }
+  .chapter .ch-head .en { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .chapter .ch-body { padding: 8px; }
+
+  .rule-banner {
+    margin: 8px; padding: 10px 12px; border-radius: 10px;
+    background: #fff8e1; border: 1px dashed #e6c35c;
+    font-size: 13px; color: #6d5a0e; line-height: 1.5;
+  }
+
+  .serveable {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 12px; border-radius: 12px; cursor: pointer;
+    border-bottom: 1px solid var(--line); transition: background .15s ease;
+  }
+  .serveable:last-child { border-bottom: none; }
+  .serveable:active { background: #eef3ff; }
+  .serveable.sel { background: var(--gold); }
+  .serveable .col { min-width: 0; }
+  .serveable .big { font-size: 17px; font-weight: 600; }
+  .serveable .big.hin { font-size: 19px; font-weight: 700; color: var(--primary-dark); }
+  .serveable .sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .serveable.sel .sub { color: #6d5a0e; }
+  .serveable .num {
+    flex: 0 0 auto; font-size: 12px; color: #fff; background: var(--primary);
+    border-radius: 50%; width: 26px; height: 26px; display: flex;
+    align-items: center; justify-content: center; font-weight: 700;
+  }
+  .speak-icon {
+    flex: 0 0 auto; font-size: 15px; color: var(--muted);
+  }
+  .serveable.sel .speak-icon { color: #6d5a0e; }
+
+  .tip-item {
+    padding: 12px 14px; border-left: 4px solid var(--primary); background: #f4f8ff;
+    border-radius: 0 10px 10px 0; margin: 6px 8px; font-size: 14px; cursor: pointer;
+  }
+  .tip-item.sel { background: var(--gold); border-left-color: #b98a00; }
+
+  .footer-note {
+    margin: 0 16px 14px; padding: 14px 16px; border-radius: 14px;
+    background: #eef3ff; border: 1px solid #dbe6ff; font-size: 13.5px; color: #33475c;
+    white-space: pre-line; line-height: 1.6;
+  }
+
+  .checklist { padding: 4px 14px 12px; }
+  .checklist li { font-size: 14px; list-style: none; padding: 6px 0; }
+
+  .toast {
+    position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%);
+    background: rgba(13,71,161,.95); color: #fff; padding: 10px 18px;
+    border-radius: 20px; font-size: 13.5px; z-index: 50;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25); opacity: 0; transition: opacity .25s;
+    max-width: 90%; text-align: center; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  /* Floating speaker toggle */
+  #speakerFab {
+    position: fixed; right: 20px; bottom: 28px; z-index: 60;
+    width: 62px; height: 62px; border-radius: 50%; border: none; cursor: pointer;
+    background: var(--primary); color: #fff; font-size: 26px;
+    box-shadow: 0 6px 20px rgba(13,71,161,.4);
+    transition: transform .15s ease, background .15s ease;
+  }
+  #speakerFab:active { transform: scale(.92); }
+  #speakerFab.off { background: #b0bec5; }
+  #speakerFab .fabsmall {
+    position: absolute; bottom: -4px; right: -4px; width: 22px; height: 22px;
+    border-radius: 50%; background: #e53935; color: #fff; font-size: 12px;
+    display: flex; align-items: center; justify-content: center; border: 2px solid #fff;
+  }
+
+  .empty { padding: 24px; text-align: center; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast"></div>
+
+<button id="speakerFab" title="Speaker ON/OFF">🔊<span id="speakerBadge" class="fabsmall" style="display:none">✕</span></button>
+
+<script src="data.js"></script>
+<script src="data_master.js"></script>
+<script>
+"use strict";
+
+var COURSES = (typeof COURSE !== "undefined") ? COURSE : [];
+var MASTERCLASS = (typeof MASTER !== "undefined") ? MASTER : [];
+var ALL = COURSES.concat(MASTERCLASS);
+
+var APP = document.getElementById("app");
+var TOAST = document.getElementById("toast");
+var FAB = document.getElementById("speakerFab");
+var FAB_BADGE = document.getElementById("speakerBadge");
+
+var speakerOn = true;
+
+// ---------- speak() ----------
+// Prefer native Android TTS bridge, fall back to Web Speech API (browser preview).
+function speak(text) {
+  if (!text) return;
+  if (text.length > 380) text = text.slice(0, 380);
+  if (!speakerOn) return;
+  if (window.AndroidBridge && typeof window.AndroidBridge.speak === "function") {
+    try { window.AndroidBridge.speak(text); return; } catch (e) {}
+  }
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = "hi-IN";
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+function stopSpeak() {
+  if (window.AndroidBridge && typeof window.AndroidBridge.stop === "function") {
+    try { window.AndroidBridge.stop(); return; } catch (e) {}
+  }
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+}
+
+// ---------- highlight + speak helper ----------
+function sel(el, text) {
+  document.querySelectorAll(".sel").forEach(function (x) { x.classList.remove("sel"); });
+  if (el) el.classList.add("sel");
+  speak(text);
+}
+
+function esc(s) {
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// ---------- build speak text from item ----------
+function pairSpeak(it) {
+  var parts = [];
+  if (it.e) parts.push(it.e);
+  if (it.h) parts.push(it.h);
+  if (it.w) parts.push(it.w);
+  return parts.join(", ") + ".";
+}
+function itemSpeak(it) {
+  var parts = [];
+  if (it.e) parts.push(it.e);
+  if (it.g) parts.push(it.g);
+  if (it.h) parts.push(it.h);
+  return parts.join(". ") + ".";
+}
+
+// ---------- renderers ----------
+function el(tag, cls, html) {
+  var d = document.createElement(tag);
+  if (cls) d.className = cls;
+  if (html !== undefined) d.innerHTML = html;
+  return d;
+}
+
+function renderHome() {
+  var html =
+    '<div class="hero">' +
+      '<h1>📚 A2Z Master</h1>' +
+      '<p>हिंदी · इंग्लिश · हिंग्लिश लर्निंग कोर्स</p>' +
+      '<span class="hint">🔊 किसी भी शब्द, पंक्ति या बटन पर टैप करें — उसे सुनें।</span>' +
+    '</div>' +
+    '<div class="section-title">बुक्स और लेवल्स <span class="count">(' + ALL.length + ')</span></div>' +
+    '<div class="grid" id="cards"></div>';
+  APP.innerHTML = html;
+  var grid = document.getElementById("cards");
+  ALL.forEach(function (book) {
+    var card = el("div", "book-card", "");
+    var itemsCount = countItems(book);
+    card.innerHTML =
+      '<div class="emoji">' + book.emoji + '</div>' +
+      '<div class="t">' + esc(book.title) + '</div>' +
+      '<div class="s">' + esc(book.subtitle) + '</div>' +
+      '<div class="s">🗂 ' + itemsCount + ' सीखने योग्य आइटम</div>';
+    card.addEventListener("click", function () { renderBook(book.id); });
+    grid.appendChild(card);
+  });
+}
+
+function countItems(book) {
+  var n = 0;
+  (book.chapters || []).forEach(function (ch) {
+    n += (ch.pairs || []).length + (ch.triples || []).length + (ch.sentence || []).length + (ch.tips || []).length + (ch.table || []).length;
+  });
+  (book.levels || []).forEach(function (lv) {
+    n += (lv.items || []).length;
+  });
+  return n;
+}
+
+function renderBook(id) {
+  var book = ALL.filter(function (b) { return b.id === id; })[0];
+  if (!book) return;
+  window.scrollTo(0, 0);
+  var html =
+    '<div class="topbar">' +
+      '<button class="back-btn" id="backBtn">← होम</button>' +
+      '<button class="back-btn" id="voiceBtn" style="background:#FF8F00">🔊 वॉइस</button>' +
+      '<span style="flex:1"></span>' +
+    '</div>' +
+    '<div class="book-head">' +
+      '<h2>' + book.emoji + ' ' + esc(book.title) + '</h2>' +
+      '<p>' + esc(book.subtitle) + '</p>' +
+    '</div>';
+  APP.innerHTML = html;
+  document.getElementById("backBtn").addEventListener("click", renderHome);
+  var voiceBtn = document.getElementById("voiceBtn");
+  voiceBtn.addEventListener("click", function () {
+    setSpeaker(!speakerOn);
+    toast(speakerOn ? "🔊 वॉइस ON" : "🔇 वॉइस OFF");
+  });
+  syncVoiceBtnText();
+
+  var wrapper = el("div", "", "");
+  APP.appendChild(wrapper);
+
+  if (book.chapters) {
+    book.chapters.forEach(function (ch, ci) {
+      var card = el("div", "chapter", "");
+      card.appendChild(el("div", "ch-head",
+        '<div class="n">' + esc(ch.name) + '</div>' +
+        (ch.en ? '<div class="en">' + esc(ch.en) + '</div>' : '')
+      ));
+      var body = el("div", "ch-body", "");
+      card.appendChild(body);
+      wrapper.appendChild(card);
+
+      if (ch.pairs) {
+        ch.pairs.forEach(function (it, i) {
+          body.appendChild(servePair(it, i, ".pairs"));
+        });
+      }
+      if (ch.triples) {
+        ch.triples.forEach(function (it, i) {
+          body.appendChild(servePair(it, i, ".triples"));
+        });
+      }
+      if (ch.sentence) {
+        ch.sentence.forEach(function (it, i) {
+          body.appendChild(serveSentence(it, i));
+        });
+      }
+      if (ch.tips) {
+        ch.tips.forEach(function (it, i) {
+          body.appendChild(serveTip(it, i));
+        });
+      }
+      if (ch.table) {
+        ch.table.forEach(function (it, i) {
+          body.appendChild(serveTip(it, i));
+        });
+      }
+      if (ch.checklist) {
+        var ul = el("ul", "checklist", ch.checklist.map(function (c) {
+          return "<li>✅ " + esc(c) + "</li>";
+        }).join(""));
+        body.appendChild(ul);
+      }
+    });
+    if (book.footer) {
+      wrapper.appendChild(el("div", "footer-note", esc(book.footer)));
+    }
+  }
+
+  if (book.levels) {
+    book.levels.forEach(function (lv) {
+      var card = el("div", "chapter", "");
+      card.appendChild(el("div", "ch-head",
+        '<div class="n">' + esc(lv.name) + '</div>' +
+        (lv.en ? '<div class="en">' + esc(lv.en) + '</div>' : '')
+      ));
+      var body = el("div", "ch-body", "");
+      if (lv.rule) body.appendChild(el("div", "rule-banner", "📐 " + esc(lv.rule)));
+      card.appendChild(body);
+      wrapper.appendChild(card);
+
+      (lv.items || []).forEach(function (it, i) {
+        body.appendChild(serveLevelItem(it, i));
+      });
+    });
+  }
+}
+
+function servePair(it, i, key) {
+  var d = el("div", "serveable",
+    '<div class="col">' +
+      '<div class="big">' + esc(it.e || "") + '</div>' +
+      (it.w ? '<div class="sub">' + esc(it.w) + '</div>' : '') +
+    '</div>' +
+    '<div class="col"><div class="big hin">' + esc(it.h || "") + '</div></div>' +
+    '<div class="speak-icon">🔊</div>'
+  );
+  d.addEventListener("click", function () { sel(d, pairSpeak(it)); });
+  return d;
+}
+
+function serveSentence(it, i) {
+  var d = el("div", "serveable",
+    '<div class="col">' +
+      '<div class="big">' + esc(it.e || "") + '</div>' +
+      (it.g ? '<div class="sub">' + esc(it.g) + '</div>' : '') +
+    '</div>' +
+    '<div class="col"><div class="big hin">' + esc(it.h || "") + '</div></div>' +
+    '<div class="speak-icon">🔊</div>'
+  );
+  d.addEventListener("click", function () { sel(d, itemSpeak(it)); });
+  return d;
+}
+
+function serveLevelItem(it, i) {
+  var d = el("div", "serveable",
+    '<div class="num">' + (it.n || "•") + '</div>' +
+    '<div class="col">' +
+      (it.e ? '<div class="big">' + esc(it.e) + '</div>' : '') +
+      (it.h ? '<div class="sub">' + esc(it.h) + '</div>' : '') +
+    '</div>' +
+    '<div class="speak-icon">🔊</div>'
+  );
+  d.addEventListener("click", function () { sel(d, itemSpeak(it)); });
+  return d;
+}
+
+function serveTip(it, i) {
+  var d = el("div", "tip-item", esc(it));
+  d.addEventListener("click", function () { sel(d, it); });
+  return d;
+}
+
+// ---------- toast ----------
+var toastTimer = null;
+function toast(msg) {
+  TOAST.textContent = msg;
+  TOAST.classList.add("show");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { TOAST.classList.remove("show"); }, 2000);
+}
+
+// ---------- speaker FAB ----------
+function setSpeaker(on) {
+  speakerOn = on;
+  FAB.classList.toggle("off", !on);
+  FAB_BADGE.style.display = on ? "none" : "flex";
+  FAB.title = on ? "Speaker ON" : "Speaker OFF";
+  if (!on) stopSpeak();
+  syncVoiceBtnText();
+}
+function syncVoiceBtnText() {
+  var vb = document.getElementById("voiceBtn");
+  if (!vb) return;
+  vb.innerHTML = speakerOn ? "🔊 वॉइस ON" : "🔇 वॉइस OFF";
+  vb.style.background = speakerOn ? "#FF8F00" : "#90a4ae";
+}
+FAB.addEventListener("click", function () { setSpeaker(!speakerOn); });
+
+// Android pushes UI state here
+window.androidUiChange = function (state) {
+  try {
+    var s = (typeof state === "object") ? state : JSON.parse(state);
+    if ("muted" in s) setSpeaker(!s.muted);
+  } catch (e) {}
+};
+
+// ---------- boot ----------
+renderHome();
+</script>
+</body>
+</html>

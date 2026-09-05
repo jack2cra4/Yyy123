@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">A2Z Master</string>
+    <string name="switch_to_locale">स्वर बदलें</string>
+    <string name="tts_initializing">स्वर तैयार हो रहा है…</string>
+    <string name="tts_ready">स्वर तैयार</string>
+    <string name="tts_unavailable">स्वर उपलब्ध नहीं है</string>
+</resources>
