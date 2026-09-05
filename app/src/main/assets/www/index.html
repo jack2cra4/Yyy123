@@ -169,6 +169,7 @@
 
 <script src="data.js"></script>
 <script src="data_master.js"></script>
+<script src="data_ultra.js"></script>
 <script>
 "use strict";
 
@@ -262,6 +263,9 @@ function renderHome() {
     '<div class="section-title">बुक्स और लेवल्स <span class="count">(' + ALL.length + ')</span></div>' +
     '<div class="grid" id="cards"></div>';
   APP.innerHTML = html;
+  try {
+    APP.insertBefore(uHomeCard(), APP.firstChild.nextSibling);
+  } catch (e) { /* ultra card is optional; never break home */ }
   var grid = document.getElementById("cards");
   ALL.forEach(function (book) {
     var card = el("div", "book-card", "");
