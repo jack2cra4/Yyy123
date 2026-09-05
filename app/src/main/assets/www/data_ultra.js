@@ -1,14 +1,15 @@
 /* =====================================================================
    A2Z MASTER — "Basic to Ultra" ISOLATED SECTION
-   FINAL MASTER LEARNING SYSTEM (Absolute Zero -> Programming Ultra)
+   CONTENT: actual learning lessons only (Hindi, English, Hinglish,
+   Real-world text, Programming basics & tracks).
    Self-contained: own data + own renderer + own isolated CSS.
    Reuses only the global helpers speak() / sel() / esc() / toast().
    ===================================================================== */
 
 var ULTRA_TITLE = "Basic to Ultra";
-var ULTRA_SUBTITLE = "FINAL MASTER LEARNING SYSTEM";
+var ULTRA_SUBTITLE = "Absolute Zero से Programming Ultra तक — Reading फिर Programming";
 
-/* ---------------- MASTER PATH (stages) ---------------- */
+/* ---------------- MASTER PATH (curriculum stages) ---------------- */
 var ULTRA_PATH = [
   { name: "ABSOLUTE ZERO", focus: "अक्षर, आवाज़, 0 से शुरुआत — कुछ भी नहीं जानने वाले के लिए।" },
   { name: "BASIC FOUNDATION", focus: "A B C D, अ आ क ख, sounds, combinations, पहले शब्द।" },
@@ -22,562 +23,279 @@ var ULTRA_PATH = [
   { name: "COMPUTER FUNDAMENTALS", focus: "Computer, hardware, software, OS, files, terminal।" },
   { name: "PROGRAMMING LOGIC", focus: "Algorithms, pseudocode, flowcharts, conditions, loops।" },
   { name: "PYTHON", focus: "Variables, data types, functions, lists, dicts, OOP।" },
-  { name: "C", focus: "Pointers, memory, structs, files, compilation।" },
-  { name: "C++", focus: "Classes, RAII, STL, templates, smart pointers।" },
-  { name: "JAVA", focus: "OOP, interfaces, collections, streams, threads।" },
-  { name: "C#", focus: "LINQ, async/await, .NET, APIs.।" },
-  { name: "HTML", focus: "Structure, semantic tags, forms, accessibility।" },
-  { name: "CSS", focus: "Selectors, box model, flexbox, grid, responsive।" },
-  { name: "JAVASCRIPT", focus: "DOM, events, closures, promises, async/await।" },
-  { name: "TYPESCRIPT", focus: "Types, interfaces, generics, narrowing।" },
-  { name: "SQL", focus: "SELECT, JOIN, GROUP BY, indexes, normalization।" },
-  { name: "LINUX/BASH", focus: "Terminal, permissions, pipes, scripts, SSH।" },
-  { name: "GIT/GITHUB", focus: "Commits, branches, pull/push, PRs, conflicts।" },
-  { name: "APIs", focus: "Requests, responses, HTTP, JSON, auth।" },
-  { name: "BACKEND", focus: "Server logic, error handling, testing, deployment।" },
-  { name: "DATABASES", focus: "Tables, keys, queries, transactions, optimization।" },
-  { name: "DATA STRUCTURES & ALGORITHMS", focus: "Arrays, stacks, trees, graphs, sorting, recursion।" },
+  { name: "C++", focus: "Classes, references, STL, templates, streams।" },
+  { name: "WEB (HTML · CSS · JS)", focus: "Structure, styling, interactivity — real pages।" },
+  { name: "DATABASES", focus: "Tables, keys, queries, transactions।" },
+  { name: "GIT/GITHUB", focus: "Commits, branches, pull/push, PRs।" },
+  { name: "DATA STRUCTURES & ALGORITHMS", focus: "Arrays, stacks, trees, sorting, recursion।" },
   { name: "SOFTWARE ENGINEERING", focus: "Clean code, modularity, testing, review।" },
   { name: "ADVANCED PROJECTS", focus: "Calculator से लेकर full applications तक।" },
-  { name: "SPECIALIZATION", focus: "Web / Mobile / Data में आगे की दिशा चुनें।" },
+  { name: "SPECIALIZATION", focus: "Web / App / Data में आगे की दिशा चुनें।" },
   { name: "PROGRAMMING ULTRA", focus: "Complex systems, architecture, independence।" },
   { name: "FINAL INDEPENDENCE", focus: "कुछ भी नया → पढ़ो, समझो, खुद सीखो, सॉल्व करो।" }
 ];
 
-/* ---------------- COMMAND SYSTEM (section 55) ---------------- */
-var ULTRA_COMMANDS = [
-  { cmd: "CONTINUE", meaning: "सबसे नई SAVE POINT से जारी रखो।" },
-  { cmd: "MORE", meaning: "और examples / explanation दो।" },
-  { cmd: "STOP", meaning: "आज का lesson यहीं रोको।" },
-  { cmd: "REVISION", meaning: "पुराने और weak material दोहराओ।" },
-  { cmd: "TEST", meaning: "छोटा test लो।" },
-  { cmd: "EXAM", meaning: "बड़ा mastery test लो।" },
-  { cmd: "EASY", meaning: "Difficulty कम करो।" },
-  { cmd: "HARD", meaning: "Difficulty बढ़ाओ।" },
-  { cmd: "REPEAT", meaning: "इसे दूसरे तरीके से समझाओ।" },
-  { cmd: "WHERE AM I?", meaning: "Current course, level, mastered skills, weak areas, next target।" },
-  { cmd: "START PROGRAMMING", meaning: "सिर्फ reading prerequisites मास्टर होने के बाद शुरू हो।" }
-];
-
-/* ---------------- LEARNING SYSTEM (sections 1-9, 54-59, 61) ---------------- */
+/* ---------------- HINDI FOUNDATION (स्वर · व्यंजन · मात्रा · बारहखड़ी) ---------------- */
 var ULTRA_SYSTEM = [
   {
-    emoji: "🎯", title: "UNIVERSAL BEGINNER RULE (सबसे ज़रूरी)",
+    emoji: "🔤", title: "स्वर (Vowels)",
     lines: [
-      "हर foundation skill curriculum में हमेशा मौजूद रहती है।",
-      "सिर्फ इसलिए न हटाओ क्योंकि मैं 'मुझे आता है' बोलता हूँ — पहले VERIFY करो।",
-      "आता है → VERIFIED, सिर्फ ज़रूरी review दो।",
-      "आधा आता है → weak parts मज़बूत करो।",
-      "नहीं आता → शुरू से सिखाओ।",
-      "उदाहरण: A B C D मालूम हो, पर CAT → C-A-T → CAT ना हो? तो decoding सिखाओ।",
-      "जो 0 भी जानता है वही राह: A→B→C→ sounds → combinations → words → sentences → paragraphs → books।",
-      "सिस्टम गति बदलती है, curriculum का अस्तित्व नहीं।"
+      "अ (a) — अनार",
+      "आ (aa) — आम",
+      "इ (i) — इमली",
+      "ई (ee) — ईख",
+      "उ (u) — उल्लू",
+      "ऊ (oo) — ऊन",
+      "ए (e) — एक, एड़ी",
+      "ऐ (ai) — ऐनक",
+      "ओ (o) — ओखली",
+      "औ (au) — औरत",
+      "अं (an) — अंगूर",
+      "अः (ah) — दुःख, प्रातः"
     ]
   },
   {
-    emoji: "💡", title: "CORE PHILOSOPHY",
+    emoji: "🗣️", title: "व्यंजन (Consonants)",
     lines: [
-      "UNDERSTANDING > MEMORIZATION (समझ > रटना)",
-      "ACCURACY > SPEED (सटीकता > गति)",
-      "SKILL > COMPLETION (कौशल > ख़त्म करना)",
-      "PRACTICE > PASSIVE READING (अभ्यास > सिर्फ पढ़ना)",
-      "UNSEEN APPLICATION > MEMORIZED EXAMPLES",
-      "INDEPENDENCE > DEPENDENCE ON TUTOR",
-      "\"मैंने देख लिया\" ≠ \"मैंने सीख लिया\"।",
-      "Memorization को mastery से कभी मत उलझाओ।"
+      "क वर्ग: क, ख, ग, घ, ङ",
+      "च वर्ग: च, छ, ज, झ, ञ",
+      "ट वर्ग: ट, ठ, ड, ढ, ण",
+      "त वर्ग: त, थ, द, ध, न",
+      "प वर्ग: प, फ, ब, भ, म",
+      "अंतिम: य, र, ल, व, श, ष, स, ह",
+      "संयुक्त: क्ष, त्र, ज्ञ",
+      "र varients: र्, रेफ (प्र), हलंत रखो।"
     ]
   },
   {
-    emoji: "🔁", title: "MASTER LEARNING LOOP",
+    emoji: "〰️", title: "मात्रा (Matras)",
     lines: [
-      "EXPLAIN → DEMONSTRATE → SMALL PRACTICE → LEARNER ANSWERS",
-      "CORRECT MISTAKES → IDENTIFY WEAKNESS → REPEAT WEAK ITEMS",
-      "REVISION → MASTERY TEST → REAL-WORLD APPLICATION → SAVE PROGRESS → NEXT STEP",
-      "जो मास्टर नहीं हुआ, उसे मास्टर कहकर मत आगे बढ़ो।"
+      "ा (कार) — का, रा, मा — काम",
+      "ि (िकार) — कि, मि — मिल",
+      "ी (ीकार) — की, खी — खीर",
+      "ु (ुकार) — कु, गु — गुलाब",
+      "ू (ूकार) — कू, दू — दूध",
+      "े (ेकार) — के, से — केला",
+      "ै (ैकार) — कै, भै — कैसा",
+      "ो (ोकार) — को, मो — मोर",
+      "ौ (ौकार) — कौ, गौ — कौआ",
+      "् (हलंत) — क् हटाता है आवाज़",
+      "ं (अनुस्वार) — और ँ (चंद्रबिंदु)",
+      "ः (विसर्ग) — दुःख, नमः"
     ]
   },
   {
-    emoji: "🩺", title: "INITIAL DIAGNOSTIC (छोटा test)",
+    emoji: "📏", title: "बारहखड़ी (Barakhadi)",
     lines: [
-      "HINDI: alphabet, अक्षर, matra, combinations, शब्द, अनजाने शब्द, वाक्य, comprehension।",
-      "ENGLISH: alphabet, sounds, phonics, शब्द, अनजाने शब्द, वाक्य, comprehension।",
-      "ROMAN HINDI / HINGLISH: पहचान, spelling variations, शब्द, वाक्य।",
-      "GENERAL: numbers, punctuation, symbols, short instructions, real-world text।",
-      "Diagnostic सिर्फ शुरुआत बताने के लिए — topics हटाने के लिए नहीं।"
+      "क — कलम",
+      "का — काम",
+      "कि — किसान",
+      "की — कीमत",
+      "कु — कुर्सी",
+      "कू — कूदना",
+      "के — केला",
+      "कै — कैसा",
+      "को — कोयला",
+      "कौ — कौआ",
+      "कं — कंघी",
+      "कः — दुःख में"
     ]
   },
   {
-    emoji: "📊", title: "MASTERY SCALE (हर skill ट्रैक करो)",
+    emoji: "✏️", title: "सरल शब्द पढ़ना (Reading)",
     lines: [
-      "LEVEL 0 — Not Started",
-      "LEVEL 1 — Recognizes",
-      "LEVEL 2 — Understands With Help",
-      "LEVEL 3 — Performs With Guidance",
-      "LEVEL 4 — Performs Independently",
-      "LEVEL 5 — Applies To Unfamiliar Material",
-      "महत्वपूर्ण foundational skills: Level 4+ के बिना 'मास्टर' मत कहो।",
-      "🟢 MASTERED · 🟡 NEEDS PRACTICE · 🔴 NOT MASTERED",
-      "कभी false में master मत mark करो।"
-    ]
-  },
-  {
-    emoji: "🧩", title: "MICRO-LEARNING + TODAY'S TARGET",
-    lines: [
-      "शुरू में एक lesson में 2–6 items।",
-      "अभ्यासी तैयार दिखे तभी मात्रा बढ़ाओ।",
-      "हर lesson 'TODAY'S TARGET' से शुरू — \"आज तुम्हें ये 3 चीज़ें सीखनी हैं...\"",
-      "Target छोटा और measurable रखो, कभी overwhelm मत करो।"
-    ]
-  },
-  {
-    emoji: "📅", title: "DAILY LESSON FORMAT",
-    lines: [
-      "DAY / LEVEL + TODAY'S TARGET",
-      "1. Explanation  2. Examples  3. Small Practice",
-      "4. Learner Response  5. Correction  6. Weak-Point Practice",
-      "7. Revision  8. Mastery Check  9. Real-World Example  10. Save Point"
-    ]
-  },
-  {
-    emoji: "🛠️", title: "ADAPTIVE TEACHING",
-    lines: [
-      "स्ट्रगल हो तो वही explanation दोबारा मत दो।",
-      "कोशिश करो: आसान भाषा, छोटे examples, step-by-step, तुलना, repetition।",
-      "आसान exercises से wapas original difficulty तक जाओ।",
-      "आगे बढ़ने वाले का: difficulty धीरे-धीरे बढ़ाओ।"
-    ]
-  },
-  {
-    emoji: "🙂", title: "NO EMBARRASSMENT RULE",
-    lines: [
-      "Mistakes normal हैं — कभी shame मत करो, कभी 'बेवकूफ' मत कहो।",
-      "बताओ क्या गलत था, क्यों, सही तरीका, और दोबारा मौका दो।"
-    ]
-  },
-  {
-    emoji: "🤝", title: "NO FALSE PROMISES",
-    lines: [
-      "हर किताब/paper/भाषा आउट-ऑफ-द-बॉक्स समझ आ जाएगा — ऐसा वादा नहीं।",
-      "सिखाओ: unfamiliar material पढ़ना, terminology पहचानना, context use करना।",
-      "Research करना, dictionaries/references use करना, connection बनाना।",
-      "मुश्किल हिस्से दोबारा पढ़ना — मज़बूत independent learning।"
-    ]
-  },
-  {
-    emoji: "🚀", title: "INDEPENDENCE TRAINING",
-    lines: [
-      "लक्ष्य नहीं: \"मैंने सब memorize कर लिया\"।",
-      "लक्ष्य: \"नई चीज़ मिले → पढ़ूँ, समझूँ, research करूँ, टुकड़ों में तोड़ूँ, सीखूँ, सॉल्व करूँ\"।",
-      "सिखाओ HOW TO LEARN — मार्गदर्शन कैसे लेना है।"
-    ]
-  },
-  {
-    emoji: "🔒", title: "RESPONSIBLE TECHNOLOGY LEARNING",
-    lines: [
-      "Security / reverse engineering सिर्फ शिक्षा, research, authorized testing के लिए।",
-      "Malware, चोरी, बिना permission protection तोड़ना — कभी नहीं।"
+      "कमल — फूल का नाम",
+      "जल — पानी",
+      "फल — खाने को",
+      "गमला — पौधे का घर",
+      "मछली — तैरती है",
+      "तितली — उड़ती है",
+      "बंदर — कूदता है",
+      "खरगोश — दौड़ता है",
+      "रात — दिन के बाद",
+      "शाम — सूरज ढलने का समय"
     ]
   }
 ];
 
-/* ---------------- READING MASTER COURSE (sections 10-29) ---------------- */
+/* ---------------- ENGLISH + HINGLISH + REAL-WORLD ---------------- */
 var ULTRA_READING = [
   {
-    emoji: "ॐ", title: "HINDI / DEVANAGARI — COMPLETE FOUNDATION",
+    emoji: "🔠", title: "PHONICS — Letter Sounds (A–Z)",
     lines: [
-      "स्वर → व्यंजन → मात्रा → मात्रा combinations → बारहखड़ी",
-      "अक्षर combinations → syllable-like reading units → simple words",
-      "दो-भाग शब्द → multi-part शब्द → लंबे शब्द → अनजाने शब्द",
-      "हलंत → अर्धाक्षर → संयुक्त अक्षर",
-      "र combinations: र् → रेफ → रु / रू",
-      "अनुस्वार → चंद्रबिंदु → विसर्ग → नुक्ता",
-      "कठिन conjuncts → कठिन letter combinations → commonly confused letters",
-      "सिर्फ words memorize मत कराओ — अनजाना शब्द डिकोड करना सिखाओ।"
+      "A — अ — Apple",
+      "B — ब — Ball",
+      "C — क — Cat",
+      "D — द — Dog",
+      "E — ए — Egg",
+      "F — फ — Fish",
+      "G — ग — Goat",
+      "H — ह — Hat",
+      "I — इ — Ink",
+      "J — ज — Jug",
+      "K — क — Kite",
+      "L — ल — Lion",
+      "M — म — Monkey",
+      "N — न — Nest",
+      "O — ओ — Orange",
+      "P — प — Pen",
+      "Q — क्व — Queen",
+      "R — र — Rabbit",
+      "S — स — Sun",
+      "T — ट — Tiger",
+      "U — अ — Umbrella",
+      "V — व — Van",
+      "W — व — Watch",
+      "X — क्स — Box",
+      "Y — य — Yoyo",
+      "Z — ज़ — Zebra"
     ]
   },
   {
-    emoji: "📈", title: "HINDI WORD PROGRESSION",
+    emoji: "🧩", title: "3-LETTER DECODING (C–A–T = CAT)",
     lines: [
-      "letters → combinations → short words → medium words",
-      "long words → difficult words → unfamiliar words → vocabulary",
-      "sentences → paragraphs → stories → books",
-      "newspapers → formal Hindi → advanced Hindi → technical Hindi",
-      "हमेशा नए (unseen) words regularly include करो।"
+      "C-A-T = CAT — बिल्ली",
+      "D-O-G = DOG — कुत्ता",
+      "S-U-N = SUN — सूरज",
+      "B-U-S = BUS — बस",
+      "C-U-P = CUP — कप",
+      "P-I-G = PIG — सुअर",
+      "H-E-N = HEN — मुर्गी",
+      "B-O-X = BOX — डिब्बा",
+      "F-O-X = FOX — लोमड़ी",
+      "J-A-R = JAR — जार",
+      "R-U-N = RUN — दौड़ना",
+      "S-I-T = SIT — बैठना",
+      "T-O-P = TOP — ऊपर",
+      "B-E-D = BED — बिस्तर",
+      "M-A-P = MAP — नक्शा"
     ]
   },
   {
-    emoji: "🔤", title: "ENGLISH — COMPLETE READING FOUNDATION",
+    emoji: "🔊", title: "Vowels & Consonants",
     lines: [
-      "A B C D... से शुरुआत, अगर आता हो तो verify करके efficiently आगे।",
-      "uppercase → lowercase → letter names → letter sounds",
-      "vowels → consonants → phonics → sound combinations → syllables",
-      "short words → long words → spelling patterns",
-      "digraphs → silent letters → irregular spellings → difficult patterns",
-      "उच्चारण patterns → unfamiliar words",
-      "words → sentences → paragraphs → stories → books",
-      "newspapers → formal → advanced → technical → academic → research-style",
-      "नए शब्द को ऐसे approach करना सिखाओ, हर word memorize नहीं।"
+      "Vowels: A, E, I, O, U",
+      "Consonants: B C D F G H J K L M N P Q R S T V W X Y Z",
+      "CAT में: C और T consonants, A vowel",
+      "DOG में: D और G consonants, O vowel",
+      "हर शब्द में कम से कम एक vowel होता है",
+      "शब्द को टुकड़ों में तोड़ो: C-AT, D-OG"
     ]
   },
   {
     emoji: "💬", title: "ROMAN HINDI / HINGLISH",
     lines: [
-      "kya / kia — hai / h — nahi / nhi / nai — main / mai",
-      "raha / rha — hoon / hu",
-      "Informal + shortened spelling, mixed Hindi-English",
-      "WhatsApp language, casual chat, abbreviations, common slang",
-      "Missing vowels, spelling mistakes, inconsistent spelling, mixed scripts",
-      "Imperfect Roman Hindi भी समझना सीखो।"
+      "kya / kia = क्या",
+      "hai / h = है",
+      "nahi / nhi / nai = नहीं",
+      "main / mai = मैं",
+      "raha / rha = रहा",
+      "hoon / hu = हूँ",
+      "kyun / kyu = क्यों",
+      "kahan / kaha = कहाँ",
+      "mujhe / muje = मुझे",
+      "chalo / chelo = चलो"
     ]
   },
   {
-    emoji: "🔀", title: "THREE-WAY LANGUAGE UNDERSTANDING",
+    emoji: "🗨️", title: "हिंग्लिश वाक्य (Real Hinglish)",
     lines: [
-      "Hindi → English · English → Hindi · Roman Hindi → Hindi",
-      "Hindi → Roman Hindi · English → Roman Hindi · Roman Hindi → English",
-      "शुरू में translation support; बाद में बिना translate किए सीधा समझ।"
+      "Main kal market jaa raha hoon",
+      "Tum kya khana pasand karte ho?",
+      "Yeh kitne ka hai?",
+      "Mujhe thoda paani chahiye",
+      "Hum sab school chalte hain",
+      "Aap kahan se aaye hain?",
+      "Bas ek minute, main aa raha hoon",
+      "Bahut accha laga milke tumse",
+      "Subah jaldi uthta hoon",
+      "Raat ko jaldi so jata hoon"
     ]
   },
   {
-    emoji: "📚", title: "VOCABULARY SYSTEM",
+    emoji: "🌍", title: "REAL-WORLD READING (दुनिया का पढ़ना)",
     lines: [
-      "WORD → pronunciation → meaning → simple explanation",
-      "example → sentence → context → related words → revision",
-      "ग्रोइंग vocabulary system बनाए रखो।",
-      "Difficult / repeated-missed words track करो, future revision में जोड़ो।"
-    ]
-  },
-  {
-    emoji: "🔢", title: "NUMBERS",
-    lines: [
-      "numbers → counting → dates → years → time → prices",
-      "percentages → fractions → decimals → currency → units",
-      "addresses → number sequences",
-      "Hindi और English दोनों context में useful जहाँ जहाँ।"
-    ]
-  },
-  {
-    emoji: "🔣", title: "SYMBOLS AND ABBREVIATIONS",
-    lines: [
-      "Common symbols, signs, abbreviations, labels, units",
-      "Mathematical symbols, headings, common notation",
-      "उनका meaning और real-world usage समझाओ।"
-    ]
-  },
-  {
-    emoji: "✍️", title: "PUNCTUATION",
-    lines: [
-      ". , ? ! : ; \" ' — ( ) [ ] / %",
-      "Relevant Hindi punctuation (। , ...)",
-      "Punctuation कैसे बदलता है: pauses, boundaries, meaning, emphasis, structure।"
-    ]
-  },
-  {
-    emoji: "📏", title: "SENTENCE READING",
-    lines: [
-      "very short → short → medium → long → multi-clause",
-      "complex → formal → difficult → technical → academic",
-      "लंबे वाक्य छोटे meaningful parts में तोड़ना सिखाओ।"
-    ]
-  },
-  {
-    emoji: "📄", title: "PARAGRAPH READING",
-    lines: [
-      "sentence relationships → main idea → supporting details",
-      "context → sequence → cause/effect → comparison → contrast",
-      "inference → implied meaning → summary",
-      "author's purpose → tone (जहाँ ज़रूरी)",
-      "पढ़ने के बाद comprehension questions पूछो।"
-    ]
-  },
-  {
-    emoji: "🌍", title: "REAL-WORLD READING",
-    lines: [
-      "signs, menus, labels, notices, forms, bills",
-      "instructions, messages, WhatsApp, websites, app screens",
-      "newspapers, stories, books, documents",
-      "technical documentation, academic/research-style material"
-    ]
-  },
-  {
-    emoji: "🧭", title: "UNKNOWN WORD STRATEGY",
-    lines: [
-      "1. break it into parts",
-      "2. identify familiar letters/sounds",
-      "3. identify spelling patterns",
-      "4. examine surrounding words",
-      "5. use context",
-      "6. estimate meaning",
-      "7. verify with dictionary/reference",
-      "8. continue reading",
-      "अंतिम लक्ष्य: independent reading।"
-    ]
-  },
-  {
-    emoji: "🎨", title: "DIFFERENT TEXT CONDITIONS",
-    lines: [
-      "विभिन्न fonts → sizes → bold → italic → uppercase → lowercase",
-      "headings → lists → tables → mixed formatting",
-      "imperfect text → typo-heavy text",
-      "handwriting-like text धीरे-धीरे, शुरुआत में unnecessary hard मत बनाओ।"
-    ]
-  },
-  {
-    emoji: "💪", title: "READING STAMINA",
-    lines: [
-      "1 line → 2 lines → short paragraph → multiple paragraphs",
-      "page → multiple pages → chapter → complete book",
-      "Track: accuracy + comprehension + stamina + फिर speed",
-      "Speed की ख़ातिर comprehension मत गिराओ।"
-    ]
-  },
-  {
-    emoji: "🆕", title: "UNSEEN TEXT TESTING",
-    lines: [
-      "Regularly बिल्कुल नए text दो — पिछले examples रटकर pass नहीं हो सकता।",
-      "Test: decoding, word recognition, pronunciation, meaning, comprehension",
-      "inference, summary, context",
-      "Performance गिरे → underlying weak skill पकड़ो।"
-    ]
-  },
-  {
-    emoji: "🗃️", title: "PERSONAL ERROR BANK",
-    lines: [
-      "Hindi mistakes · English mistakes · Roman Hindi mistakes",
-      "vocabulary mistakes · pronunciation confusion · spelling confusion",
-      "punctuation mistakes · comprehension mistakes · long-sentence mistakes",
-      "recurring confusion pairs",
-      "बार-बार के mistakes को extra practice दो।"
-    ]
-  },
-  {
-    emoji: "⏳", title: "SPACED REVISION",
-    lines: [
-      "immediately → same session में → next lesson → कुछ lessons बाद",
-      "checkpoints पर → final exams से पहले",
-      "weak material ज़्यादा बार return करे।"
-    ]
-  },
-  {
-    emoji: "💾", title: "SAVE POINT",
-    lines: [
-      "DAY: · COURSE: · LEVEL: · CURRENT BLOCK:",
-      "MASTERED: · NEEDS PRACTICE: · WEAK ITEMS:",
-      "LAST COMPLETED: · NEXT STARTING POINT: · NEXT TARGET:",
-      "\"CONTINUE\" → सबसे latest save point से resume, बेकार में restart नहीं।"
-    ]
-  },
-  {
-    emoji: "🎓", title: "READING FINAL EXAM",
-    lines: [
-      "बिल्कुल unseen material पर comprehensive परीक्षा।",
-      "Hindi + English + Roman Hindi + Hinglish + WhatsApp-style text",
-      "signs + notices + newspaper-style + story + book-style text",
-      "difficult sentences + long paragraphs + technical + academic/research text",
-      "Test: reading, understanding, context, inference, summary, unknown-word handling",
-      "Reading mastery दिखे तभी programming शुरू।"
+      "Sign: STOP — रुको",
+      "Sign: EXIT — बाहर निकलो",
+      "Sign: PUSH — धकेलो",
+      "Sign: PULL — खींचो",
+      "Notice: NO PARKING — गाड़ी मत लगाओ",
+      "Menu: Chai ₹10, Samosa ₹15, Poha ₹20",
+      "Notice: School closed on Friday",
+      "WhatsApp: kal milte hain",
+      "WhatsApp: ok bhai, done",
+      "Label: Use before expiry date",
+      "किराना: दाल ₹120/kg, चावल ₹45/kg",
+      "Timetable: 6 AM उठो, 7 AM पढ़ो"
     ]
   }
 ];
 
-/* ---------------- PROGRAMMING COURSE (sections 30-53) ---------------- */
+/* ---------------- PROGRAMMING (Logic · Python · C++ · Web) ---------------- */
 var ULTRA_PROGRAMMING = [
   {
-    emoji: "🖥️", title: "PROGRAMMING FOUNDATION (reading के बाद!)",
+    emoji: "🧱", title: "PROGRAMMING LOGIC — आधार",
     lines: [
-      "Computer → Hardware → Software → Operating System",
-      "Files → Folders → Programs → Code → Programming",
-      "Programming Languages → Terminal → Commands → Logic",
-      "किसी Technical knowledge की assume मत करो, हर नया term आसान भाषा में।"
+      "Computer: input → processing → output",
+      "Algorithm: कदम-दर-कदम योजना",
+      "Pseudocode: आसान भाषा में plan",
+      "Variable: data रखने का नाम वाला बॉक्स",
+      "Condition: if / else — अगर, वरना",
+      "Loop: for / while — दोहराना",
+      "Function: बार-बार इस्तेमाल करने वाला block",
+      "Debugging: error ढूंढ़ना और ठीक करना"
     ]
   },
   {
-    emoji: "🧠", title: "PROGRAMMING LOGIC",
+    emoji: "🐍", title: "PYTHON TRACK",
     lines: [
-      "logical thinking → breaking problems into steps → algorithms",
-      "pseudocode → flowcharts → conditions → loops",
-      "variables → functions → decomposition → problem solving → debugging mindset"
+      "print('Hello') — screen पर लिखो",
+      "name = 'A2Z' — variable बनाओ",
+      "x = 5 + 3 — calculation",
+      "if x > 3: — condition",
+      "for i in range(5): — loop",
+      "def add(a, b): return a + b — function",
+      "list1 = [1, 2, 3] — collection",
+      "print(name + x) — जोड़ो और दिखाओ"
     ]
   },
   {
-    emoji: "🛣️", title: "PROGRAMMING ROADMAP",
+    emoji: "➕➕", title: "C++ TRACK",
     lines: [
-      "COMPUTER FUNDAMENTALS → PROGRAMMING LOGIC → PYTHON",
-      "C → C++ → JAVA → C# → HTML → CSS → JAVASCRIPT",
-      "TYPESCRIPT → SQL → LINUX/BASH → GIT/GITHUB → APIs",
-      "BACKEND → DATABASES → DSA → SOFTWARE ENGINEERING",
-      "ADVANCED PROJECTS → SPECIALIZATION → PROGRAMMING ULTRA",
-      "मज़बूत कारण हो तो order बदलो, पर foundation कभी मत हटाओ।"
+      "#include <iostream> — library",
+      "int main() { } — शुरुआत की जगह",
+      "cout << 'Hello'; — print",
+      "int x = 5; — variable",
+      "if (x > 3) { } — condition",
+      "for (int i = 0; i < 5; i++) — loop",
+      "void greet() { } — function",
+      "return 0; — सफल खत्म होना"
     ]
   },
   {
-    emoji: "🐍", title: "PYTHON",
+    emoji: "🌐", title: "WEB TRACK (HTML · CSS · JS)",
     lines: [
-      "variables → data types → input/output → operators → conditions",
-      "loops → functions → strings → lists → tuples → sets → dicts",
-      "modules → packages → exceptions → files → JSON → environments",
-      "OOP → testing → debugging → APIs → databases",
-      "async programming → architecture → larger applications"
+      "HTML — हड्डी: <h1>, <p>, <button>",
+      "CSS — सजावट: रंग, size, layout",
+      "JavaScript — हरकत: click, interact",
+      "<h1>Hello</h1> — बड़ा शीर्षक",
+      "<p>Yeh paragraph hai</p> — अनुच्छेद",
+      "<button>Click</button> — बटन",
+      "जोड़ो: heading → text → button → click करो",
+      "असली page बनाकर सीखो"
     ]
   },
   {
-    emoji: "©️", title: "C",
+    emoji: "🗺️", title: "PROGRAMMING ROADMAP",
     lines: [
-      "syntax, types, variables, conditions, loops, functions",
-      "arrays, strings, pointers, memory, structs, dynamic memory",
-      "files, compilation, linking, debugging",
-      "data structures, algorithms, system fundamentals"
-    ]
-  },
-  {
-    emoji: "➕➕", title: "C++ (modern)",
-    lines: [
-      "classes, objects, references, RAII, smart pointers",
-      "inheritance, polymorphism, templates, STL, lambdas",
-      "exceptions, memory, concurrency, performance",
-      "design patterns, architecture"
-    ]
-  },
-  {
-    emoji: "☕", title: "JAVA",
-    lines: [
-      "methods, classes, objects, OOP, interfaces, inheritance",
-      "collections, generics, exceptions, streams, lambdas",
-      "threads, concurrency, JVM concepts, testing, APIs, architecture"
-    ]
-  },
-  {
-    emoji: "🅾️", title: "C#",
-    lines: [
-      "methods, classes, interfaces, generics, collections, LINQ",
-      "exceptions, async/await, .NET, APIs, testing, architecture"
-    ]
-  },
-  {
-    emoji: "🌐", title: "HTML",
-    lines: [
-      "document structure, elements, attributes",
-      "semantic HTML, forms, tables, accessibility",
-      "असली pages बनाओ।"
-    ]
-  },
-  {
-    emoji: "🎨", title: "CSS",
-    lines: [
-      "selectors, box model, layout, flexbox, grid",
-      "responsive design, positioning, typography, animations",
-      "असली pages बनाओ।"
-    ]
-  },
-  {
-    emoji: "⚡", title: "JAVASCRIPT",
-    lines: [
-      "variables, data types, functions, arrays, objects",
-      "scope, closures, DOM, events, modules",
-      "promises, async/await, APIs, Node.js"
-    ]
-  },
-  {
-    emoji: "📐", title: "TYPESCRIPT",
-    lines: [
-      "types, interfaces, type aliases, generics, unions, narrowing",
-      "classes, modules, advanced types, Node.js, APIs, architecture"
-    ]
-  },
-  {
-    emoji: "🗄️", title: "SQL",
-    lines: [
-      "databases, tables, rows, columns, keys",
-      "SELECT, INSERT, UPDATE, DELETE, WHERE",
-      "JOIN, GROUP BY, ORDER BY, aggregation",
-      "indexes, transactions, normalization, query optimization"
-    ]
-  },
-  {
-    emoji: "🐧", title: "LINUX / BASH",
-    lines: [
-      "terminal, files, directories, paths, permissions",
-      "processes, environment variables, pipes, redirection",
-      "shell scripting, packages, logs, SSH fundamentals",
-      "Commands हमेशा पहले समझाओ, फिर use करवाओ।"
-    ]
-  },
-  {
-    emoji: "🔀", title: "GIT / GITHUB",
-    lines: [
-      "repositories, commits, branches, merge",
-      "clone, pull, push, remotes, pull requests",
-      "conflicts, tags, releases, practical workflows"
-    ]
-  },
-  {
-    emoji: "🔌", title: "APIs / BACKEND / DATABASES",
-    lines: [
-      "API क्या है → requests → responses → HTTP basics → JSON",
-      "authentication concepts → API integration",
-      "backend fundamentals → databases → server-side programming",
-      "error handling → testing → deployment concepts"
-    ]
-  },
-  {
-    emoji: "🧮", title: "DATA STRUCTURES & ALGORITHMS",
-    lines: [
-      "arrays, strings, linked lists, stacks, queues, hash tables",
-      "trees, heaps, graphs",
-      "searching, sorting, recursion, dynamic programming",
-      "greedy algorithms, graph algorithms, complexity"
-    ]
-  },
-  {
-    emoji: "📖", title: "CODE READING",
-    lines: [
-      "CODE → READ → EXPLAIN → PREDICT OUTPUT",
-      "FIND PROBLEM → MODIFY → TEST",
-      "तेज़ी से unfamiliar code दिखाओ — दूसरों का कोड समझना ज़रूरी।"
-    ]
-  },
-  {
-    emoji: "🐞", title: "DEBUGGING",
-    lines: [
-      "ERROR → LOCATION → HYPOTHESIS → TEST → FIX → VERIFY",
-      "syntax errors, runtime errors, logic errors",
-      "dependency errors, configuration errors, build errors, environment errors"
-    ]
-  },
-  {
-    emoji: "🏗️", title: "PROJECT-BASED LEARNING",
-    lines: [
-      "1. tiny exercises  2. calculator  3. guessing game",
-      "4. small text app  5. file app  6. database app",
-      "7. API app  8. web app  9. multi-file app",
-      "10. full project  11. independent original project",
-      "Foundation से पहले complexity मत बनाओ।"
-    ]
-  },
-  {
-    emoji: "🧪", title: "PROGRAMMING MASTERY TESTS",
-    lines: [
-      "हर major stage पर: concepts, code reading, code writing",
-      "debugging, problem solving, unfamiliar problems, project work",
-      "एक बार copy करने भर से mastery नहीं।"
-    ]
-  },
-  {
-    emoji: "💼", title: "PROFESSIONAL SOFTWARE SKILLS",
-    lines: [
-      "clean code, modularity, architecture, documentation",
-      "testing, code review, dependency management, performance",
-      "maintainability, security fundamentals, project organization, version control"
-    ]
-  },
-  {
-    emoji: "🏁", title: "FINAL PROGRAMMING EXAM",
-    lines: [
-      "बिल्कुल unfamiliar problems दो।",
-      "Test: logic, coding, debugging, code reading",
-      "algorithms, databases, APIs, Git, Linux",
-      "architecture, software design, project work",
-      "लक्ष्य: independent problem solving।"
+      "Step 1: Computer + Logic",
+      "Step 2: Python",
+      "Step 3: C++",
+      "Step 4: Web (HTML, CSS, JS)",
+      "Step 5: Databases + Git/GitHub",
+      "Step 6: Algorithms + Projects",
+      "ट्रैक चुनो: Web Dev / App Dev / Data",
+      "हर दिन एक छोटा program लिखो"
     ]
   }
 ];
@@ -731,7 +449,7 @@ function renderUltra() {
       '<h2>🚀 ' + ULTRA_TITLE + '</h2>' +
       '<p>' + ULTRA_SUBTITLE + '</p>' +
       '<p>ABSOLUTE ZERO → BASIC → 101 → 202 → 302 → INTERMEDIATE → ADVANCED → ULTRA → PROGRAMMING</p>' +
-      '<span class="u-hint">🔊 किसी भी item पर टैप करें — रंग highlight और आवाज़ दोनों।</span>' +
+      '<span class="u-hint">🔊 किसी भी अक्षर, शब्द या topic पर टैप करें — आवाज़ सुनें।</span>' +
     '</div>';
   APP.innerHTML = html;
 
@@ -745,8 +463,8 @@ function renderUltra() {
     "आज का दिन: DAY " + (sp.day || 1),
     "स्टेज: " + current.name,
     "फोकस: " + current.focus,
-    "सिर्फ 2–6 छोटी चीज़ें — बड़ा Lesson नहीं, मापने लायक लक्ष्य।",
-    "मिल गया तो: अगले चरण पर जाओ; नहीं मिला तो: यहीं RIVISION करो।"
+    "सिर्फ 2–6 छोटी चीज़ें — बड़ा Lesson नहीं।",
+    "मिल गया तो: अगले चरण पर जाओ; नहीं मिला तो: वही दोहराओ।"
   ]);
   wrap.appendChild(tgt);
 
@@ -794,42 +512,20 @@ function renderUltra() {
   pathCard.appendChild(pathBody);
   wrap.appendChild(pathCard);
 
-  /* COMMAND SYSTEM */
-  wrap.appendChild(uSectionLabel("📣 COMMAND SYSTEM — बोलो और सुने"));
-  var cmdCard = document.createElement("div");
-  cmdCard.className = "u-card";
-  var cmdBody = document.createElement("div");
-  cmdBody.className = "u-body";
-  cmdBody.style.display = "block";
-  var chipRow = document.createElement("div");
-  chipRow.className = "u-inlineflex";
-  ULTRA_COMMANDS.forEach(function (c) {
-    var chip = document.createElement("span");
-    chip.className = "u-chip";
-    chip.textContent = "⚡ " + c.cmd;
-    chip.addEventListener("click", function () {
-      sel(chip, c.cmd + "। " + c.meaning);
-    });
-    chipRow.appendChild(chip);
-  });
-  cmdBody.appendChild(chipRow);
-  cmdCard.appendChild(cmdBody);
-  wrap.appendChild(cmdCard);
-
-  /* LEARNING SYSTEM */
-  wrap.appendChild(uSectionLabel("🧩 LEARNING SYSTEM — नियम और दायरा"));
+  /* HINDI FOUNDATION */
+  wrap.appendChild(uSectionLabel("🔤 हिंदी फाउंडेशन — स्वर · व्यंजन · मात्रा · बारहखड़ी"));
   ULTRA_SYSTEM.forEach(function (g) {
     wrap.appendChild(uCard(g.title, g.emoji, g.lines));
   });
 
-  /* READING MASTER COURSE */
-  wrap.appendChild(uSectionLabel("📖 READING MASTER COURSE — पढ़ने की पूरी मास्टरी"));
+  /* ENGLISH + HINGLISH + REAL-WORLD */
+  wrap.appendChild(uSectionLabel("🇬🇧 इंग्लिश फाउंडेशन — Phonics · Letter Sounds · 3-Letter Decoding"));
   ULTRA_READING.forEach(function (g) {
     wrap.appendChild(uCard(g.title, g.emoji, g.lines));
   });
 
-  /* PROGRAMMING COURSE */
-  wrap.appendChild(uSectionLabel("💻 PROGRAMMING COURSE — reading के बाद"));
+  /* PROGRAMMING */
+  wrap.appendChild(uSectionLabel("💻 प्रोग्रामिंग — Logic · Python · C++ · Web"));
   ULTRA_PROGRAMMING.forEach(function (g) {
     wrap.appendChild(uCard(g.title, g.emoji, g.lines));
   });
@@ -854,7 +550,7 @@ function renderUltra() {
   /* FINAL note */
   var fin = document.createElement("div");
   fin.className = "u-note";
-  fin.textContent = "सबसे ज़रूरी नियम: NEVER SKIP A FOUNDATION। VERIFY → REINFORCE → TEACH। जो 0 जानता है और जो ABCD जानता है — दोनों के लिए एक ही curriculum, गति अलग। Reading mastery से पहले PROGRAMMING नहीं।";
+  fin.textContent = "अगला कदम: आज का target पूरा करो → SAVE POINT → CONTINUE। धीरे-धीरे, हर दिन छोटा अभ्यास — बड़ी प्रगति।";
   wrap.appendChild(fin);
 }
 
@@ -880,7 +576,7 @@ function uHomeCard() {
     '<div style="font-size:26px">🚀</div>' +
     '<div style="flex:1;min-width:0">' +
       '<div style="font-weight:800;font-size:16px;color:#fff">Basic to Ultra</div>' +
-      '<div style="font-size:12px;color:#f3e7ff;margin-top:3px">FINAL MASTER SYSTEM — Zero से Programming Ultra तक</div>' +
+      '<div style="font-size:12px;color:#f3e7ff;margin-top:3px">Reading फिर Programming — Zero से Ultra तक</div>' +
     '</div>' +
     '<div style="flex:0 0 auto;background:rgba(255,255,255,.2);border-radius:30px;padding:6px 12px;font-size:13px;color:#fff">खोलें ▶</div>';
   d.addEventListener("click", renderUltra);
